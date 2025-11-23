@@ -5,6 +5,7 @@ import { Button } from "@heroui/button";
 import { Textarea } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 import { NumberInput } from "@heroui/number-input";
+import { Switch } from "@heroui/switch";
 
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
@@ -25,21 +26,50 @@ export const experienceLevels = [
 
 export default function FormPage() {
   const [submitted, setSubmitted] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isDryRun, setIsDryRun] = useState(true);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { cv, ...payload } = Object.fromEntries(
-      new FormData(e.currentTarget)
-    );
 
-    console.log("e.currentTarget:", e.currentTarget);
-    console.log("payload:", payload);
-    console.log("cv:", cv);
+    const raw = new FormData(e.currentTarget);
+    const cvFile = raw.get("cv") as File | null;
+    const name = (raw.get("name") as string) || "";
+    const email = (raw.get("email") as string) || "";
+    const message = (raw.get("message") as string) || "";
+    const role = (raw.get("role") as string) || "";
+    const experienceLevel = (raw.get("experienceLevel") as string) || "";
+    const experienceYears = raw.get("experienceYears") as string;
+    const salary = raw.get("salary") as string;
 
-    const formData = new FormData(e.currentTarget);
+    if (!cvFile || cvFile.size === 0) {
+      setError("Please attach your CV (PDF).");
+
+      return;
+    }
+    if (!name || !email) {
+      setError("Name and email are required.");
+
+      return;
+    }
+
+    setError(null);
+
+    const payload: Record<string, string | number> = { name, email };
+
+    if (message) payload.message = message;
+    if (role) payload.role = role;
+    if (experienceYears) payload.experienceYears = Number(experienceYears);
+    if (experienceLevel) payload.experienceLevel = experienceLevel;
+    if (salary) payload.salary = Number(salary);
 
     const timestamp = Date.now();
-    const signature = await sha256Hash(`${payload.name}-${timestamp}`);
+    const signature = await sha256Hash(`${name}-${timestamp}`);
+
+    const formData = new FormData();
+
+    formData.append("cv", cvFile);
+    formData.append("payload", JSON.stringify(payload));
 
     const request = {
       method: "POST",
@@ -47,25 +77,44 @@ export default function FormPage() {
       headers: {
         "x-timestamp": `${timestamp}`,
         "x-signature": signature,
-        "x-dry-run": "true",
-      },
+      } as Record<string, string>,
     };
 
-    console.log("formData:", formData);
-    console.log("request:", request);
+    if (isDryRun) {
+      request.headers["x-dry-run"] = "true";
+    }
 
-    // const res = await fetch("/api/submit");
+    try {
+      const res = await fetch(
+        "https://api.bidpoint.ai/api/v1/candidates",
+        request
+      );
 
-    // const result = await res.json();
-    // setSubmitted(result);
+      if (!res.ok) {
+        const text = await res.text();
+
+        throw new Error(text || "Request failed");
+      }
+      const result = await res.json();
+
+      setSubmitted(result);
+    } catch (err) {
+      console.error(err);
+
+      setError(`Failed to submit form. Please try again`);
+    }
   };
 
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 w-full">
         <div className="inline-block max-w-lg text-center justify-center">
-          <h1 className={title()}>Form</h1>
+          <h1 className={title()}>Candidate Application Form</h1>
         </div>
+
+        <Switch isSelected={isDryRun} onValueChange={setIsDryRun}>
+          Testing mode
+        </Switch>
         <Form
           className="w-full"
           encType="multipart/form-data"
@@ -153,8 +202,9 @@ export default function FormPage() {
           {/* cv */}
           <Input
             isRequired
-            errorMessage="Please enter a valid cv"
-            label="CV"
+            accept="application/pdf"
+            errorMessage="Please upload your CV as PDF"
+            label="CV (PDF)"
             labelPlacement="outside"
             name="cv"
             placeholder="Select your CV"
@@ -170,6 +220,9 @@ export default function FormPage() {
             placeholder="Enter your message"
             type="text"
           />
+          {error && (
+            <div className="text-small text-danger-500 text-left">{error}</div>
+          )}
           <Button type="submit" variant="bordered">
             Submit
           </Button>
