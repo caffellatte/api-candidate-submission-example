@@ -13,14 +13,14 @@ export default function IndexPage() {
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-lg text-center justify-center">
-          <span className={title()}>Make&nbsp;</span>
-          <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
+          <span className={title()}>Minimal&nbsp;</span>
+          <span className={title({ color: "violet" })}>example&nbsp;</span>
           <br />
           <span className={title()}>
-            websites regardless of your design experience.
+            of a app that submits a candidate application
           </span>
           <div className={subtitle({ class: "mt-4" })}>
-            Beautiful, fast and modern React UI library.
+            to an API endpoint using <code>multipart/form-data</code>.
           </div>
         </div>
 
@@ -32,9 +32,9 @@ export default function IndexPage() {
               radius: "full",
               variant: "shadow",
             })}
-            href={siteConfig.links.docs}
+            href="/form"
           >
-            Documentation
+            Application Form
           </Link>
           <Link
             isExternal
@@ -44,15 +44,6 @@ export default function IndexPage() {
             <GithubIcon size={20} />
             GitHub
           </Link>
-        </div>
-
-        <div className="mt-8">
-          <Snippet hideCopyButton hideSymbol variant="bordered">
-            <span>
-              Get started by editing{" "}
-              <Code color="primary">pages/index.tsx</Code>
-            </span>
-          </Snippet>
         </div>
       </section>
     </DefaultLayout>
