@@ -2,6 +2,8 @@
 
 Vite + React + Nitro project that shows how to send a candidate application (including a CV upload) to an external API using `multipart/form-data`.
 
+![Form](form.png)
+
 ## What’s inside
 
 - Vite + React 18 with [HeroUI](https://www.heroui.com/) and TailwindCSS for a minimal UI.
