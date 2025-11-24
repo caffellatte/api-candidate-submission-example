@@ -41,7 +41,7 @@ The dev server serves both the React app and the Nitro API route. Submitting the
 2) When the “Testing mode” switch is on, an `isDryRun=true` flag is included and the server will add an `x-dry-run` header.  
 3) `server/api/apply.ts` generates a timestamped SHA-256 signature (`x-timestamp`, `x-signature`), forwards the file and JSON payload, and responds with the upstream result.
 
-If you want to target a different API, adjust the URL and headers in `server/api/apply.ts`. The handler currently uses an `undici` `ProxyAgent`; replace or remove it if you need a direct connection.
+If you want to target a different API, adjust the headers in `server/api/apply.ts` and `API_URL` in `.env` file. The handler currently uses an `undici` `ProxyAgent`; replace or remove it if you need a direct connection.
 
 ## Building and previewing
 
