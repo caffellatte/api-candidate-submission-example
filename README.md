@@ -4,7 +4,7 @@ Vite + React + Nitro project that shows how to send a candidate application (inc
 
 ## What’s inside
 
-- Vite + React 18 with [HeroUI](https://www.heroui.dev/) and TailwindCSS for a minimal UI.
+- Vite + React 18 with [HeroUI](https://www.heroui.com/) and TailwindCSS for a minimal UI.
 - Two routes: `/` (landing) and `/form` (candidate form).
 - Nitro server route at `/api/apply` that proxies the form submission to API endpoint, signs the request with a SHA-256 hash, and forwards the uploaded CV.
 - Light/dark theme toggle wired to HeroUI’s provider.
