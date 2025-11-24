@@ -1,10 +1,12 @@
 import { ProxyAgent } from "undici";
 import { defineHandler } from "nitro/h3";
 
-import { sha256Hash } from "~/app/utils";
+import { sha256 } from "~/server/utils";
 
 export default defineHandler(async (event) => {
-  const proxyAgent = new ProxyAgent("http://127.0.0.1:999999999");
+  const apiUrl = process.env.API_URL;
+
+  const proxyAgent = new ProxyAgent("http://127.0.0.1:9999");
 
   const raw = await event.req.formData();
 
@@ -19,7 +21,7 @@ export default defineHandler(async (event) => {
   const isDryRun = (raw.get("isDryRun") as string) || "";
 
   const timestamp = Date.now();
-  const signature = await sha256Hash(`${name}-${timestamp}`);
+  const signature = sha256(`${name}-${timestamp}`);
 
   const payload: Record<string, string | number> = { name, email };
 
@@ -49,10 +51,7 @@ export default defineHandler(async (event) => {
     request.headers["x-dry-run"] = "true";
   }
 
-  const response = await fetch(
-    "https://api.bidpoint.ai/api/v1/candidates",
-    request,
-  );
+  const response = await fetch(apiUrl!, request);
 
   return response;
 });

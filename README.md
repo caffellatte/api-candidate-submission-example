@@ -28,7 +28,7 @@ Prerequisites: Node 18+ and [pnpm](https://pnpm.io) (or swap in npm/yarn with eq
 ```bash
 pnpm install
 pnpm dev
-# Open http://localhost:5173
+# Open http://localhost:3000
 ```
 
 The dev server serves both the React app and the Nitro API route. Submitting the form will POST to `/api/apply`.
@@ -56,4 +56,4 @@ pnpm lint
 
 ## Notes
 
-- Set environment variables `API_URL` to send send a candidate application to an external API.
+- Set environment variable `API_URL` to send a candidate application to an external API.
