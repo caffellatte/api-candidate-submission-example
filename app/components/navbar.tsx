@@ -1,7 +1,5 @@
-import { Button } from "@heroui/button";
-import { Kbd } from "@heroui/kbd";
 import { Link } from "@heroui/link";
-import { Input } from "@heroui/input";
+
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
@@ -12,10 +10,10 @@ import {
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { GithubIcon } from "@/components/icons";
-import { Logo } from "@/components/icons";
+import { siteConfig } from "~/app/config/site";
+import { ThemeSwitch } from "~/app/components/theme-switch";
+import { GithubIcon } from "~/app/components/icons";
+import { Logo } from "~/app/components/icons";
 
 export const Navbar = () => {
   return (

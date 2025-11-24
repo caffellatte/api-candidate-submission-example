@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import IndexPage from "@/pages/index";
-import FormPage from "@/pages/form";
+import IndexPage from "~/app/pages/index";
+import FormPage from "~/app/pages/form";
 function App() {
   return (
     <Routes>

@@ -11,6 +11,12 @@ node_modules
 dist
 dist-ssr
 *.local
+.data
+.nitro
+.cache
+.output
+.env
+.env.local
 
 # Editor directories and files
 !.vscode/extensions.json
@@ -21,9 +27,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-
-pnpm-lock.yaml
-yarn.lock
-package-lock.json
-bun.lockb
