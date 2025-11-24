@@ -51,7 +51,7 @@ export default defineHandler(async (event) => {
 
   const response = await fetch(
     "https://api.bidpoint.ai/api/v1/candidates",
-    request
+    request,
   );
 
   return response;
